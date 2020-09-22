@@ -6,7 +6,7 @@ logging.basicConfig(level=logging.INFO)
 # documentation
 # https://huggingface.co/transformers/main_classes/pipelines.html#transformers.TextClassificationPipeline
 
-# sentences to test
+# sentences to run sentiment analysis
 TEST_SENTENCES = [
     "I hate you.",  # obviously negative
     "I love you.",  # obviously positive
@@ -15,7 +15,7 @@ TEST_SENTENCES = [
 ]
 
 # his text classification pipeline can currently be loaded from pipeline() using the following task identifier
-TEXT_CLS_ID = 'sentiment-analysis'
+TASK_ID = 'sentiment-analysis'
 
 
 def main():
@@ -23,8 +23,8 @@ def main():
     # the default model is bert.
     # if the model has not been downloaded, it will download the model on the fly
     logger = logging.getLogger("main")
-    logger.info("loading pipeline...")
-    bert_pipeline: cast(TextClassificationPipeline, Pipeline) = pipeline(TEXT_CLS_ID, return_all_scores=True)
+    logger.info("loading text classification pipeline...")
+    bert_pipeline: cast(TextClassificationPipeline, Pipeline) = pipeline(TASK_ID, return_all_scores=True)
     # this will execute the __call__ implementation of TextClassificationPipeline
     # accepts a string, or list of strings as the parameter
     results = bert_pipeline(TEST_SENTENCES)
