@@ -3,6 +3,8 @@ import pprint
 import tensorflow as tf
 import tensorflow_datasets as tfds
 import itertools
+import logging
+logging.basicConfig(level=logging.INFO)
 
 # check out the documentation from here
 # https://www.tensorflow.org/datasets/catalog/ted_hrlr_translate
@@ -48,15 +50,18 @@ def create_subwords_tokenizer(ted_ex: tf.data.Dataset) -> \
     tokenizer breaks a sentence down to words.
     SubwordTextEncoder: https://www.tensorflow.org/datasets/api_docs/python/tfds/deprecated/text/SubwordTextEncoder
     """
+    logger = logging.getLogger("create_subwords_tokenizer")
     global APPROX_VOCAB_SIZE
     gen_pt_sent = (pt.numpy() for (pt, _) in ted_ex)
     gen_en_sent = (en.numpy() for (_, en) in ted_ex)
+    logger.info("building tokenizer for pt...")
     tokenizer_pt = tfds.deprecated.text.SubwordTextEncoder.build_from_corpus(
         # any generator that outputs a string
         corpus_generator=gen_pt_sent,
         # approximate size of the vocabulary to create
         target_vocab_size=APPROX_VOCAB_SIZE
     )
+    logger.info("building tokenizer for en...")
     tokenizer_en = tfds.deprecated.text.SubwordTextEncoder.build_from_corpus(
         corpus_generator=gen_en_sent,
         target_vocab_size=APPROX_VOCAB_SIZE
@@ -77,10 +82,10 @@ def main():
     train_ex_numpy = ((pt.numpy(), en.numpy()) for (pt, en) in train_ex)  # generator comprehension
     pp.pprint(list(itertools.islice(train_ex_numpy, 10)))
     print("### testing the english tokenizer ###")
-    tokenizer_en, _ = create_subwords_tokenizer(ted_ex=train_ex)
+    _, tokenizer_en = create_subwords_tokenizer(ted_ex=train_ex)
     sample_string = "Transformer is awesome"
     encoded_string = tokenizer_en.encode(s=sample_string)  # this won't terminate?
-    pp.pprint(encoded_string)
+    print("Sample string: {}\nEncoded string: {}".format(sample_string, encoded_string))
 
 
 if __name__ == "__main__":

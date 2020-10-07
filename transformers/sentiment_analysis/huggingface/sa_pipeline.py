@@ -10,6 +10,7 @@ logging.basicConfig(level=logging.INFO)
 TEST_SENTENCES = [
     "I hate you.",  # obviously negative
     "I love you.",  # obviously positive
+    "You have a high blood pressure.",
     "Don't beat around the bush!",  # not obviously negative
     "I sighed in relief to know that the intellectual future of humanity is safe."  # not obviously positive
 ]
