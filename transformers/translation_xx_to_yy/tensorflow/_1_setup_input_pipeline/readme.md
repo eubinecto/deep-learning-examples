@@ -6,8 +6,11 @@
 2. Create a custom subwords tokenizer from the training dataset.
 3. Add a start and end token to the input and target.
 4. preprocess the training set.
-  - filer long sentences
-
+   - filer long sentences
+   - encode with the tokenizers
+   - shuffle
+   - padded batch
+   - prefetch
 
 
 ## concepts
